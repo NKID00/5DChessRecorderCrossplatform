@@ -5,7 +5,7 @@ using System.IO;
 using System.Collections.Generic;
 using FiveDChessDataInterface.Types;
 
-namespace DataInterfaceConsoleTest
+namespace FiveDChessRecorderCrossplatform
 {
     class Program
     {

@@ -1,3 +1,35 @@
+# Cross-platform Port of [5D-PGN-Recorder](https://github.com/penteract/5D-PGN-Recorder)
+
+A port of 5D-PGN-Recorder which runs on Linux and Windows.
+
+## Important notes for Linux users
+
+This program may require root permission to access the memory of the game.
+
+## Build
+
+Install dependency [FiveDChessDataInterfaceCrossplatform](https://github.com/NKID00/FiveDChessDataInterfaceCrossplatform):
+
+```sh
+$ dotnet nuget add source --username <GitHub Username> --password <GitHub Personal Access Token> --store-password-in-clear-text --name github "https://nuget.pkg.github.com/NKID00/index.json"
+$ dotnet restore
+```
+
+Build:
+
+```sh
+$ dotnet build --no-restore
+```
+
+Publish as single file:
+
+```sh
+$ dotnet publish --no-build -r linux-x64 -p:PublishSingleFile=true --self-contained false -o publish
+$ dotnet publish --no-build -r win-x64 -p:PublishSingleFile=true --self-contained false -o publish
+```
+
+Binaries are located in the `publish/` directory.
+
 # 5D Chess With Multiverse Time Travel Notation Recorder
 
 An **unofficial** program based on https://github.com/GHXX/FiveDChessDataInterface for saving notation from games of [5D Chess With Multiverse Time Travel](https://store.steampowered.com/app/1349230/5D_Chess_With_Multiverse_Time_Travel/).
