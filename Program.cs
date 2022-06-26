@@ -14,19 +14,27 @@ namespace FiveDChessRecorderCrossplatform
             DataInterface di;
             while (true)
             {
-                while (!DataInterface.TryCreateAutomatically(out di, out int numberOfProcesses))
+                try
                 {
-                    Thread.Sleep(1000);
-                    Console.WriteLine("Current number of processes: " + numberOfProcesses);
+                    while (!DataInterface.TryCreateAutomatically(out di, out int numberOfProcesses))
+                    {
+                        Thread.Sleep(1000);
+                        Console.WriteLine("Current number of processes: " + numberOfProcesses);
+                    }
+
+                    Console.WriteLine("Process found. Initializing...");
+                    di.Initialize();
+                    Console.WriteLine("Ready!");
+                    Console.WriteLine("This program will create files recording games longer than 5 moves when they are finished");
+                    // Console.WriteLine("It will also play a sound specified by Tick.wav when a player in a timed game has used 1/3 of their time since the start of their turn or the previous tick");
+
+                    RecordGames(di);
                 }
-
-                Console.WriteLine("Process found. Initializing...");
-                di.Initialize();
-                Console.WriteLine("Ready!");
-                Console.WriteLine("This program will create files recording games longer than 5 moves when they are finished");
-                // Console.WriteLine("It will also play a sound specified by Tick.wav when a player in a timed game has used 1/3 of their time since the start of their turn or the previous tick");
-
-                RecordGames(di);
+                catch (IOException)
+                {
+                    Console.WriteLine("Unknown IOException caught. Restarting...");
+                    Thread.Sleep(1000);
+                }
             }
         }
 
@@ -76,6 +84,13 @@ namespace FiveDChessRecorderCrossplatform
             if (piece.IsBlack) return p.ToLower();
             else return p;
         }
+
+        private static string SingleLetterNotationOrEmpty(ChessBoard.ChessPiece piece)
+        => piece.Kind switch
+        {
+            ChessBoard.ChessPiece.PieceKind.Pawn => "",
+            _ => piece.SingleLetterNotation()
+        };
 
         private static void RecordGames(DataInterface di)
         {
@@ -255,11 +270,11 @@ namespace FiveDChessRecorderCrossplatform
                         }
                         if (movetype == 0)
                         {
-                            lastRun += ($"{mkLT(mem.moveSourceL, mem.moveSourceT)}{board.Pieces[mem.moveSourceX * board.height + mem.moveSourceY].SingleLetterNotation()}{(char)(97 + mem.moveSourceX)}{1 + mem.moveSourceY}{(char)(97 + mem.moveDestX)}{1 + mem.moveDestY} ");
+                            lastRun += ($"{mkLT(mem.moveSourceL, mem.moveSourceT)}{SingleLetterNotationOrEmpty(board.Pieces[mem.moveSourceX * board.height + mem.moveSourceY])}{(char)(97 + mem.moveSourceX)}{1 + mem.moveSourceY}{(char)(97 + mem.moveDestX)}{1 + mem.moveDestY} ");
                         }
                         else if (movetype == 1)
                         {
-                            lastRun += ($"{mkLT(mem.moveSourceL, mem.moveSourceT)}{board.Pieces[mem.moveSourceX * board.height + mem.moveSourceY].SingleLetterNotation()}{(char)(97 + mem.moveSourceX)}{1 + mem.moveSourceY}>{mkLT(mem.moveDestL, mem.moveDestT)}{(char)(97 + mem.moveDestX)}{1 + mem.moveDestY} ");
+                            lastRun += ($"{mkLT(mem.moveSourceL, mem.moveSourceT)}{SingleLetterNotationOrEmpty(board.Pieces[mem.moveSourceX * board.height + mem.moveSourceY])}{(char)(97 + mem.moveSourceX)}{1 + mem.moveSourceY}>{mkLT(mem.moveDestL, mem.moveDestT)}{(char)(97 + mem.moveDestX)}{1 + mem.moveDestY} ");
                         }
                         else
                         { //movetype==2
