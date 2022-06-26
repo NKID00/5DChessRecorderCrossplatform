@@ -12,19 +12,22 @@ namespace FiveDChessRecorderCrossplatform
         static void Main()
         {
             DataInterface di;
-            while (!DataInterface.TryCreateAutomatically(out di, out int numberOfProcesses))
+            while (true)
             {
-                Thread.Sleep(1000);
-                Console.WriteLine("Current number of processes: " + numberOfProcesses);
+                while (!DataInterface.TryCreateAutomatically(out di, out int numberOfProcesses))
+                {
+                    Thread.Sleep(1000);
+                    Console.WriteLine("Current number of processes: " + numberOfProcesses);
+                }
+
+                Console.WriteLine("Process found. Initializing...");
+                di.Initialize();
+                Console.WriteLine("Ready!");
+                Console.WriteLine("This program will create files recording games longer than 5 moves when they are finished");
+                // Console.WriteLine("It will also play a sound specified by Tick.wav when a player in a timed game has used 1/3 of their time since the start of their turn or the previous tick");
+
+                RecordGames(di);
             }
-
-            Console.WriteLine("Process found. Initializing...");
-            di.Initialize();
-            Console.WriteLine("Ready!");
-            Console.WriteLine("This program will create files recording games longer than 5 moves when they are finished");
-            Console.WriteLine("It will also play a sound specified by Tick.wav when a player in a timed game has used 1/3 of their time since the start of their turn or the previous tick");
-
-            RecordGames(di);
         }
 
         private static string GenerateFEN(ChessBoard board, string timeline, string turn)
@@ -94,6 +97,10 @@ namespace FiveDChessRecorderCrossplatform
             var memLocWhichPlayerIsLocal = new FiveDChessDataInterface.MemoryHelpers.MemoryLocation<int>(di.GetGameHandle(), di.MemLocChessArrayPointer.Location, -0x44);
             while (true)
             {
+                if (!di.IsValid())
+                {
+                    break;
+                }
                 var thisP = di.GetCurrentPlayersTurn();
                 var thisTime = di.GetCurT();
                 if (thisP != lastP)
