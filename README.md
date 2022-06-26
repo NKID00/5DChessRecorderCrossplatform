@@ -1,6 +1,8 @@
-# Cross-platform Port of [5D-PGN-Recorder](https://github.com/penteract/5D-PGN-Recorder)
+# Cross-platform Partial Port of [5D-PGN-Recorder](https://github.com/penteract/5D-PGN-Recorder)
 
-A port of 5D-PGN-Recorder which runs on Linux and Windows.
+A partial port of 5D-PGN-Recorder which runs on Linux and Windows.
+
+The sound playing feature is disabled because .NET Core 3.1 does not support it.
 
 ## Important notes for Linux users
 

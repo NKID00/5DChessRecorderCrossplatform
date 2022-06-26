@@ -36,7 +36,7 @@ namespace FiveDChessRecorderCrossplatform
             string fen = "";
             var lastP = di.GetCurrentPlayersTurn();
             var lastTime = di.GetCurT();
-            System.Media.SoundPlayer player = new System.Media.SoundPlayer("Tick.wav");
+            // System.Media.SoundPlayer player = new System.Media.SoundPlayer("Tick.wav");
             List<int> times = new List<int>();
             int oldTurn = 0;
             bool written = false;
@@ -54,7 +54,7 @@ namespace FiveDChessRecorderCrossplatform
                 }
                 if (lastTime!=0 && (thisTime-1)*3<=(lastTime-1)*2){//Should always tick if thisTime==1 or thisTime==0
                     try{
-                        player.Play();
+                        // player.Play();
                     }
                     catch {
                     }
