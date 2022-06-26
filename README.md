@@ -8,7 +8,7 @@ This program may require root permission to access the memory of the game.
 
 ## Build
 
-Install dependency [FiveDChessDataInterfaceCrossplatform](https://github.com/NKID00/FiveDChessDataInterfaceCrossplatform):
+Restore dependency [FiveDChessDataInterfaceCrossplatform](https://github.com/NKID00/FiveDChessDataInterfaceCrossplatform):
 
 ```sh
 $ dotnet nuget add source --username <GitHub Username> --password <GitHub Personal Access Token> --store-password-in-clear-text --name github "https://nuget.pkg.github.com/NKID00/index.json"
@@ -28,7 +28,7 @@ $ dotnet publish --no-build -r linux-x64 -p:PublishSingleFile=true --self-contai
 $ dotnet publish --no-build -r win-x64 -p:PublishSingleFile=true --self-contained false -o publish
 ```
 
-Binaries are located in the `publish/` directory.
+Binaries are located in the `publish/` directory. Prebuilt artifacts can be found in [releases](https://github.com/NKID00/5DChessRecorderCrossplatform/releases) and [GitHub Actions](https://github.com/NKID00/5DChessRecorderCrossplatform/actions/new).
 
 # 5D Chess With Multiverse Time Travel Notation Recorder
 

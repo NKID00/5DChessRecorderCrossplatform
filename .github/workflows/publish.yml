@@ -1,0 +1,38 @@
+name: Publish
+
+on:
+  [push, pull_request]
+
+
+jobs:
+  dotnet:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.x
+
+    - name: Restore dependencies
+      run: |
+        dotnet nuget add source --username NKID00 --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/NKID00/index.json"
+        dotnet restore
+
+    - name: Build
+      run: dotnet build --no-restore -c Release
+
+    - name: Pack
+      run: |
+        TAG=${{ github.ref_name }}
+        dotnet pack FiveDChessDataInterface/FiveDChessDataInterface.csproj --no-build -c Release -o package /p:PackageVersion=${TAG:1}
+
+    - name: Publish
+      run: |
+        dotnet publish --no-build -r linux-x64 -p:PublishSingleFile=true --self-contained false -o publish
+        dotnet publish --no-build -r win-x64 -p:PublishSingleFile=true --self-contained false -o publish
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        path: "publish/*"
