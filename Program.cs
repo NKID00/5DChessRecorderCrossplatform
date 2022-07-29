@@ -71,15 +71,14 @@ namespace FiveDChessRecorderCrossplatform
 
         private static string GenerateFENSymbol(ChessBoard.ChessPiece piece)
         {
-            // var p = piece.Kind switch
-            // {
-            //     ChessBoard.ChessPiece.PieceKind.Pawn => "P*",
-            //     ChessBoard.ChessPiece.PieceKind.King => "K*",
-            //     ChessBoard.ChessPiece.PieceKind.Rook => "R*",
-            //     ChessBoard.ChessPiece.PieceKind.Brawn => "W*",
-            //     _ => piece.SingleLetterNotation()
-            // };
-            var p = piece.SingleLetterNotation();
+            var p = piece.Kind switch
+            {
+                ChessBoard.ChessPiece.PieceKind.Pawn => "P*",
+                ChessBoard.ChessPiece.PieceKind.King => "K*",
+                ChessBoard.ChessPiece.PieceKind.Rook => "R*",
+                ChessBoard.ChessPiece.PieceKind.Brawn => "W*",
+                _ => piece.SingleLetterNotation()
+            };
 
             if (piece.IsBlack) return p.ToLower();
             else return p;
